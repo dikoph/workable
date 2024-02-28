@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: restart-mramasvc1
+spec:
+  schedule: "0 0 * * *" 
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: kubectl-container
+            image: bitnami/kubectl:latest
+            command: ["kubectl", "delete", "pods", "-l", "app=mramasvc1", "--namespace=dev-mrama"]
+          restartPolicy: OnFailure
+
